@@ -14,16 +14,9 @@ class ChainingHashTable:
             self.table.append([])
 
     # Inserts a new item into the hash table.
-    ''' 
-    #Original
-    def insert(self, item):
-        # get the bucket list where this item will go.
-        bucket = hash(item) % len(self.table)
-        bucket_list = self.table[bucket]
 
-        # insert the item to the end of the bucket list.
-        bucket_list.append(item)
-    '''
+    def getAll(self):
+        return self.table
 
     def insert(self, key, item):  # does both insert and update
         # get the bucket list where this item will go.

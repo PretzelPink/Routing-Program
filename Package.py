@@ -1,15 +1,5 @@
 class package:
 
-    ID=0
-    address=""
-    city=""
-    zipCode=0
-    weight=0
-    status=""
-    deliveryTime=0
-    deadLine=0
-    specialNote=""
-
     def __init__(self, iD, dlvryTime, addrs, cty, zipCd, wgt, note=""):
         self.ID = iD
         self.address = addrs
@@ -19,8 +9,7 @@ class package:
         self.deadline = dlvryTime
         self.specialNote = note
 
-    def stringify(self):
+    def __str__(self):
         packageString = ""
-
-        packageString += str(self.ID) + "\n" + self.address
-
+        packageString += str(self.ID) + "," + self.address + "," + self.city + "," + self.zipCode + "," + self.weight + "," + self.deadline + "," + self.specialNote
+        return (packageString)
