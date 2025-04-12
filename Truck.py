@@ -18,7 +18,6 @@ class truck:
 
         nearestDistance = float(self.findDistance(self.currentLocation, str(self.packages[0]).split(",")[1])) #initializes nearest distance to distance of currentLocation and first package in list [0]
         for x in self.packages:
-            print("NEAREST  " + str(nearestDistance))
             if(float(self.findDistance(self.currentLocation, str(x).split(",")[1])) < nearestDistance):
                 j=i #stores nearest package index
                 nearestDistance = float(self.findDistance(self.currentLocation, str(x).split(",")[1]))
@@ -33,10 +32,15 @@ class truck:
         if(pack[6] == ""):  #checks for special note on package
             self.milesTraveled += float(self.findDistance(self.currentLocation, pack[1]))
             self.currentLocation = pack[1]
-            print("delivered package at " + self.currentLocation)
-            print("\n" + str(self.milesTraveled))
+            # print("delivered package at " + self.currentLocation)
+            # print("\n" + str(self.milesTraveled))
         else:
             pass
+            # print(len(self.packages))
+        packInfo = ""
+        for x in pack:
+            packInfo += str(x) + ","
+        return packInfo + str(self.milesTraveled)
 
     def findDistance(self, x_address, y_address):
         addressList = []
