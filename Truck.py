@@ -9,6 +9,18 @@ class truck:
         self.currentLocation = "4001 South 700 East"
         self.milesTraveled = 0
         self.truckID = truckid
+        self.timeDeployed = datetime.timedelta(hours=int(0),minutes=int(0))
+
+    def atHub(self):
+        if(self.currentLocation == "4001 South 700 East"):
+            return True
+        else:
+            return False
+
+    def backToHub(self):
+        miles = self.findDistance(self.currentLocation, "4001 South 700 East")
+        self.currentLocation = "4001 South 700 East"
+        return (datetime.timedelta(minutes=(float(miles) / 18) * 60))
 
     def loadPackage(self, package):
         if ((len(self.packages) < 16)):
@@ -18,37 +30,49 @@ class truck:
     def nextClosestPackage(self):
         i = 0
         j=0
+        nearestDistance = float(self.findDistance(self.currentLocation, str(self.packages[0]).split(",")[1])) #initializes nearest distance to distance of currentLocation and first package in list [0]
+        for x in self.packages:
+            if ((float(self.findDistance(self.currentLocation, str(x).split(",")[1])) < nearestDistance)):
+                j = i
+                nearestDistance = float(self.findDistance(self.currentLocation, str(x).split(",")[1]))
+            # if((":" in str(x).split(",")[5]) and ("EOD" in str(self.packages[j]).split(",")[5])):
+            #     j=i
+            #     nearestDistance = float(self.findDistance(self.currentLocation, str(x).split(",")[1]))
+            #
+            # elif((":" in str(x).split(",")[5]) and (":" in str(self.packages[j]).split(",")[5])):
+            #     if(int(str(x).split(",")[5].split(":")[0]) < int(str(self.packages[j]).split(",")[5].split(":")[0])):
+            #         j=i #stores nearest package index
+            #         nearestDistance = float(self.findDistance(self.currentLocation, str(x).split(",")[1]))
+            #
+            #     elif (int(str(x).split(",")[5].split(":")[0]) == int(str(self.packages[j]).split(",")[5].split(":")[0])):
+            #         if((float(self.findDistance(self.currentLocation, str(x).split(",")[1])) < nearestDistance)):
+            #             j=i
+            #             nearestDistance = float(self.findDistance(self.currentLocation, str(x).split(",")[1]))
 
-        print(self.findDistance(self.currentLocation, str(self.packages[0]).split(",")[1]))
-        # nearestDistance = float(self.findDistance(self.currentLocation, str(self.packages[0]).split(",")[1])) #initializes nearest distance to distance of currentLocation and first package in list [0]
-        # for x in self.packages:
-        #
-        #     if(float(self.findDistance(self.currentLocation, str(x).split(",")[1])) < nearestDistance):
-        #         j=i #stores nearest package index
-        #         nearestDistance = float(self.findDistance(self.currentLocation, str(x).split(",")[1]))
-        #
-        #     i += 1
+            i += 1
         return self.packages.pop(j)
 
+    # def nextPackage(self):
+    #     if(len(self.packages)>0):
+    #         nextPackage = self.packages.pop(0)
+    #         return nextPackage
 
-    def deliverPackage(self, time):
-        pack = str(self.nextClosestPackage()).split(",") #pack[1] will retrieve the package address
+    def deliverPackage(self, currentTime):
+        pack = (str(self.nextClosestPackage()).split(","))#pack[1] will retrieve the package address
         routeDistance = 0.0
-        print(pack)
-        if(True):#pack[6] == ""):  #checks for special note on package
+        #print(pack)
+        #print(pack)
+        routeDistance = float(self.findDistance(self.currentLocation, pack[1]))
+        self.milesTraveled += routeDistance
+        self.currentLocation = pack[1]
 
-            routeDistance = float(self.findDistance(self.currentLocation, pack[1]))
-            self.milesTraveled += routeDistance
-            self.currentLocation = pack[1]
-            # print("delivered package at " + self.currentLocation)
-            # print("\n" + str(self.milesTraveled))
-        else:
-            pass
-            # print(len(self.packages))
         packInfo = ""
         for x in pack:
             packInfo += str(x) + ","
-        return packInfo + str(round(self.milesTraveled, 2)) + "," + str(time + datetime.timedelta(minutes=(routeDistance/18) * 60)) + "," + self.truckID
+
+        packInfo += str(round(self.milesTraveled, 2)) + "," + str(datetime.timedelta(minutes=(routeDistance / 18) * 60)) + "," + self.truckID
+        return packInfo
+
 
     def findDistance(self, x_address, y_address):
         addressList = []
