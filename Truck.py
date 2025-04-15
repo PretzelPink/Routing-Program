@@ -1,11 +1,14 @@
 import csv
+import datetime
+
 
 class truck:
-    def __init__(self):
+    def __init__(self, truckid):
         self.packages = []  # Instance variable: each truck has its own package list
         self.travelSpeed = 18
         self.currentLocation = "4001 South 700 East"
         self.milesTraveled = 0
+        self.truckID = truckid
 
     def loadPackage(self, package):
         if ((len(self.packages) < 16)):
@@ -16,21 +19,26 @@ class truck:
         i = 0
         j=0
 
-        nearestDistance = float(self.findDistance(self.currentLocation, str(self.packages[0]).split(",")[1])) #initializes nearest distance to distance of currentLocation and first package in list [0]
-        for x in self.packages:
-            if(float(self.findDistance(self.currentLocation, str(x).split(",")[1])) < nearestDistance):
-                j=i #stores nearest package index
-                nearestDistance = float(self.findDistance(self.currentLocation, str(x).split(",")[1]))
-
-            i += 1
+        print(self.findDistance(self.currentLocation, str(self.packages[0]).split(",")[1]))
+        # nearestDistance = float(self.findDistance(self.currentLocation, str(self.packages[0]).split(",")[1])) #initializes nearest distance to distance of currentLocation and first package in list [0]
+        # for x in self.packages:
+        #
+        #     if(float(self.findDistance(self.currentLocation, str(x).split(",")[1])) < nearestDistance):
+        #         j=i #stores nearest package index
+        #         nearestDistance = float(self.findDistance(self.currentLocation, str(x).split(",")[1]))
+        #
+        #     i += 1
         return self.packages.pop(j)
 
 
-    def deliverPackage(self):
+    def deliverPackage(self, time):
         pack = str(self.nextClosestPackage()).split(",") #pack[1] will retrieve the package address
+        routeDistance = 0.0
+        print(pack)
+        if(True):#pack[6] == ""):  #checks for special note on package
 
-        if(pack[6] == ""):  #checks for special note on package
-            self.milesTraveled += float(self.findDistance(self.currentLocation, pack[1]))
+            routeDistance = float(self.findDistance(self.currentLocation, pack[1]))
+            self.milesTraveled += routeDistance
             self.currentLocation = pack[1]
             # print("delivered package at " + self.currentLocation)
             # print("\n" + str(self.milesTraveled))
@@ -40,7 +48,7 @@ class truck:
         packInfo = ""
         for x in pack:
             packInfo += str(x) + ","
-        return packInfo + str(self.milesTraveled)
+        return packInfo + str(round(self.milesTraveled, 2)) + "," + str(time + datetime.timedelta(minutes=(routeDistance/18) * 60)) + "," + self.truckID
 
     def findDistance(self, x_address, y_address):
         addressList = []
