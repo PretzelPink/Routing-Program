@@ -1,4 +1,4 @@
-#main.py, Student Id: xxxxxxxxx
+#main.py, Student Id: xxxxxx
 
 import csv
 from operator import contains
