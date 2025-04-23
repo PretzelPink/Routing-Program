@@ -158,29 +158,33 @@ while(True):
             endTime += datetime.timedelta(hours=int(12), minutes=int(0))
         #O(n), input validation for times
 
-            print("ID, Address, City, State, Weight(KILO), Delivery Deadline, Special Note, Status, Miles, Time Delivered")
-            for x in deliveryInfo:
-                if(x != None):
-                    timeDelivered = datetime.timedelta(hours=int(int(x[9].split(":")[0])),minutes=int(int(x[9].split(":")[1][0:2])))
+        print("ID, Address, City, State, Weight(KILO), Delivery Deadline, Special Note, Status, Miles, Time Delivered")
+        for x in deliveryInfo:
+            if(x != None):
+                timeDelivered = datetime.timedelta(hours=int(int(x[9].split(":")[0])),minutes=int(int(x[9].split(":")[1][0:2])))
 
-                    #checks each package against delivered time to determine status
-                    if(timeDelivered > startTime and timeDelivered < endTime):
-                        x[7] = "delivered"
-                        print(x)
-                    elif(timeDelivered > endTime):
-                        x[7] = "en route"
-                        print(x)
-                    elif(x[10] == truck1.truckID and startTime <= truck1.timeDeployed):
-                        x[7] = "at hub"
-                        print(x)
-                    elif(x[10] == truck2.truckID and startTime <= truck2.timeDeployed):
-                        x[7] = "at hub"
-                        print(x)
-                    elif(x[10] == truck3.truckID and startTime <= truck3.timeDeployed):
-                        x[7] = "at hub"
-                        print(x)
-                    else:
-                        print(x)
+                #checks each package against delivered time to determine status
+                if(x[6] == "Wrong address listed" and startTime >= datetime.timedelta(hours=int(10),minutes=int(20))):
+                    x[1] = "410 S State St"
+                else:
+                    x[1] = "300 State St"
+                if(timeDelivered > startTime and timeDelivered < endTime):
+                    x[7] = "delivered"
+                    print(x)
+                elif(timeDelivered > endTime):
+                    x[7] = "en route"
+                    print(x)
+                elif(x[10] == truck1.truckID and startTime <= truck1.timeDeployed):
+                    x[7] = "at hub"
+                    print(x)
+                elif(x[10] == truck2.truckID and startTime <= truck2.timeDeployed):
+                    x[7] = "at hub"
+                    print(x)
+                elif(x[10] == truck3.truckID and startTime <= truck3.timeDeployed):
+                    x[7] = "at hub"
+                    print(x)
+                else:
+                    print(x)
 
     else:
         print("error, please enter another input")
